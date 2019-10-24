@@ -1,0 +1,12 @@
+//plugins {
+//    id 'org.siouan.frontend' version '1.2.1'
+//}
+//
+//frontend {
+//    // Replace with your Node version.
+//    nodeVersion = '10.15.3'
+//    // Replace 'build' by the name of your script in your project's 'package.json' file.
+//    yarnEnabled = true
+//    yarnVersion = '1.16.0'
+//    assembleScript = 'run build'
+//}
