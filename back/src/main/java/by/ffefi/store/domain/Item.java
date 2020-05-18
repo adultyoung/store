@@ -1,6 +1,5 @@
 package by.ffefi.store.domain;
 
-import by.ffefi.store.dto.ItemType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,29 +10,41 @@ import java.util.Set;
 
 @EqualsAndHashCode(of = {"id"})
 @Data
-@MappedSuperclass
-public abstract class Item {
+@Entity
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String pet;
+
     private String title;
 
     private String description;
-
-    private String img;
 
     @ColumnDefault(value = "true")
     private boolean inStock;
 
     private String price;
 
-    private ItemType type;
+    private String type;
 
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "item_size", joinColumns = @JoinColumn(name = "item_id"))
-    private Set<String> sizes;
+    private Set<Size> sizes;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "item_description", joinColumns = @JoinColumn(name = "item_id"))
+    private Set<Description> fullDescription;
 
     private String company;
+
+    private String size;
+    private String age;
+
+    @ColumnDefault(value ="1")
+    private int quantity = 1;
+
+    private String sizeOfItem;
 }

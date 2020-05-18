@@ -1,6 +1,6 @@
 <template>
-    <v-dialog v-model="dialog" max-width="500px">
-        <v-btn
+    <v-dialog v-model="dialog" max-width="500px" >
+        <v-btn style="padding: 0;"
                 icon
                 slot="activator"
         >
@@ -25,17 +25,20 @@
                 <v-container grid-list-md>
                     <v-layout wrap>
                         <v-flex xs12>
-                            <v-form ref="form" v-model="valid" lazy-validation>
-                                <v-text-field prepend-inner-icon="person"
+                            <v-form action="/login" method="post" v-model="valid" id="form" lazy-validation>
+                                <v-text-field prepend-inner-icon="call"
+                                              name="username"
                                               v-model="username"
                                               :rules="usernameRules"
                                               :counter="50"
-                                              label="Имя пользователя"
+                                              label="Телефон"
                                               required
+                                              :mask="telephoneMask"
                                 ></v-text-field>
                                 <v-flex xs12>
                                     <v-text-field type="password"
-                                                  :prepend-inner-icon="lock"
+                                                  name="password"
+                                                  prepend-inner-icon="lock"
                                                   v-model="password"
                                                   :rules="passwordRules"
                                                   :counter="50"
@@ -46,7 +49,7 @@
                                 <template v-if="register">
                                     <v-text-field
                                             type="password"
-                                            :prepend-inner-icon="lock"
+                                            prepend-inner-icon="lock"
                                             v-model="password2"
                                             :rules="passwordRules"
                                             :counter="50"
@@ -65,14 +68,13 @@
                         </v-flex>
                     </v-layout>
                 </v-container>
-            </v-card-text>
-            <v-card-actions>
                 <template v-if="!register">
                     <v-btn
+                            type="submit"
+                            form="form"
                             block
                             color="green"
                             :disabled="!valid"
-                            @click.native="submitLogin"
                     >
                         Войти
                     </v-btn>
@@ -96,7 +98,7 @@
                         </v-flex>
                     </v-layout>
                 </template>
-            </v-card-actions>
+            </v-card-text>
         </v-card>
     </v-dialog>
 </template>
@@ -113,8 +115,8 @@
             valid: true,
             username: '',
             usernameRules: [
-                v => !!v || 'Имя пользователя обязательно',
-                v => (v && v.length <= 50) || 'Имя пользователя должно быть менее 50 символов'
+                v => !!v || 'Телефон обязателен',
+                v => (v && v.length <= 50) || 'Телефон быть менее 50 символов'
             ],
             password: '',
             password2: '',
@@ -127,6 +129,7 @@
                 v => !!v || 'E-mail обязателен',
                 v => /.+@.+/.test(v) || 'Введите валидный E-mail',
             ],
+            telephoneMask: "+375 (##) ###-##-##"
         }),
 
         methods: {

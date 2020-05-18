@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,22 +18,23 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 @Data
-@EqualsAndHashCode(of = {"id"})
-@ToString(of = {"id", "username"})
+@EqualsAndHashCode(of = {"telephone"})
+@ToString(of = {"telephone"})
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    private String username;
+    private String feed;
+
+    private String telephone;
 
     private String firstName;
 
     private String lastName;
+
+    private String otchestvo;
 
     private String password;
 
@@ -65,10 +65,14 @@ public class User implements UserDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     @Override

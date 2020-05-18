@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Component
@@ -21,7 +22,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             response.sendError(403, "This account is blocked.");
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        response.sendRedirect("/");
+        response.sendRedirect("https://doghouse.by");
 
     }
 }

@@ -1,6 +1,7 @@
 package by.ffefi.store.config;
 
 import by.ffefi.store.service.UserService;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -51,17 +52,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and()
-                .csrf().disable()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and()
+                .csrf()
+                .ignoringAntMatchers("/login")
+                .ignoringAntMatchers("/registration")
+                .ignoringAntMatchers("/order")
+                .ignoringAntMatchers("/viberapi")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .authorizeRequests()
-                .antMatchers("/", "/registr", "/login*").permitAll()
+                .antMatchers("/", "/registration/*", "/login*", "pets/*", "/order*", "viberapi").permitAll()
                 .and().formLogin().successHandler(handler).loginPage("/login");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
+
                 .userDetailsService(userService)
                 .passwordEncoder(encoder());
     }

@@ -2,17 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="ef879fa3ec63749c4b376083bdaf415a.png" rel="icon">
+    <link href="/dc22fe21b826e1ff69a77d8cbb761afd.png" type="image/png" sizes="16x16" rel="icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" name="viewport">
+    <meta content="width=device-width, initial-scale=1, user-scalable=yes" name="viewport">
     <title>Dog House</title>
     <script th:inline="javascript">
-        var frontendData = [[${frontendData}]];
         var items = [# th:utext = "${items}" /];
+        var currentPage = [# th:utext = "${currentPage}" /];
+        var totalPages = [# th:utext = "${totalPages}" /];
+        var frontendData = [[${frontendData}]];
     </script>
 </head>
 <body>
 <div id="app"></div>
-<script src="js/main.js"></script>
+<script src="http://localhost:8080/main.js"></script>
 </body>
 </html>

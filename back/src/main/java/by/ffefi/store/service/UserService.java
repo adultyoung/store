@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
 
     public boolean save(User user) {
 
-        if (userDao.findByUsername(user.getUsername()) != null) {
+        if (userDao.findByTelephone(user.getUsername()) != null) {
             return false;
         }
 
@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
+        User user = userDao.findByEmail(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -39,13 +39,30 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User loadUserById(String id) {
-        Optional<User> user = userDao.findById(id);
+    public User loadUserById(Long id) {
+        Optional<User> user = userDao.findById(id.toString());
 
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("User not found");
         }
 
         return user.get();
+    }
+
+    public void updateUser(User user, User userFromDb) {
+        if (
+                !user.getEmail().isEmpty() &&
+                        !user.getUsername().isEmpty() &&
+                        !user.getPassword().isEmpty() &&
+                        (user.getUsername().length() < 50 &&
+                                user.getPassword().length() < 50 &&
+                                user.getEmail().length() < 50)
+        ) {
+            userFromDb.setFirstName(user.getFirstName());
+            userFromDb.setLastName(user.getLastName());
+            userFromDb.setEmail(user.getEmail());
+            userFromDb.setPassword(user.getPassword());
+            userDao.save(userFromDb);
+        }
     }
 }

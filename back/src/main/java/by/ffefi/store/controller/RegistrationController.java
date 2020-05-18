@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.UUID;
 
 @RestController
-@RequestMapping("/registr")
+@RequestMapping("/registration")
 public class RegistrationController {
 
     private final UserService userService;
@@ -29,7 +28,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    private ResponseEntity registration(@RequestBody User user) {
+    public User registration(@RequestBody(required = false) User user) {
         if (
                 !user.getEmail().isEmpty() &&
                         !user.getUsername().isEmpty() &&
@@ -38,15 +37,14 @@ public class RegistrationController {
                                 user.getPassword().length() < 50 &&
                                 user.getEmail().length() < 50)
         ) {
-            user.setId(UUID.randomUUID().toString());
             user.setPassword(encoder.encode(user.getPassword()));
             user.setLastVisit(LocalDateTime.now());
             user.setRoles(Collections.singleton(Role.USER));
             user.setCreatedAt(LocalDateTime.now());
             user.setStatus(Collections.singleton(Status.ACTIVE));
             userService.save(user);
-            return ResponseEntity.ok("successfully registrated");
+            return user;
         }
-        return (ResponseEntity) ResponseEntity.badRequest();
+        return null;
     }
 }

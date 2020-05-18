@@ -1,7 +1,6 @@
 package by.ffefi.store.service;
 
-import by.ffefi.store.dao.CatDao;
-import by.ffefi.store.dao.DogDao;
+import by.ffefi.store.dao.ItemDao;
 import by.ffefi.store.domain.Item;
 import by.ffefi.store.dto.ItemPageDto;
 import org.springframework.data.domain.Page;
@@ -15,18 +14,15 @@ import java.util.List;
 @Service
 public class UtilsService {
 
-    private final CatDao catDao;
-    private final DogDao dogDao;
+    private final ItemDao itemDao;
 
-    public UtilsService(CatDao catDao, DogDao dogDao) {
-        this.catDao = catDao;
-        this.dogDao = dogDao;
+    public UtilsService(ItemDao itemDao) {
+        this.itemDao = itemDao;
     }
 
     public ItemPageDto search(String text, Pageable pageable) {
         List<Item> search = new ArrayList<>();
-        search.addAll(catDao.findByTitleContainingIgnoreCase(text));
-        search.addAll(dogDao.findByTitleContainingIgnoreCase(text));
+        search.addAll(itemDao.findByTitleContainingIgnoreCase(text));
         Page<Item> searchPage = new PageImpl<>(search, pageable, search.size());
 
         return new ItemPageDto(

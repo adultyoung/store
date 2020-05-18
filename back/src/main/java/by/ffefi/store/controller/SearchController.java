@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static by.ffefi.store.controller.ItemController.ITEMS_PER_PAGE;
 
 @RestController
-@RequestMapping("/search?={text}")
+@RequestMapping("/search")
 public class SearchController {
 
     private final UtilsService utilsService;
@@ -22,7 +22,7 @@ public class SearchController {
         this.utilsService = utilsService;
     }
 
-    @GetMapping()
+    @GetMapping("{text}")
     public ItemPageDto searchItem(@PageableDefault(size = ITEMS_PER_PAGE, sort = {"id"}, direction = Sort.Direction.DESC)Pageable pageable, @PathVariable("text") String text) {
         return utilsService.search(text, pageable);
     }
